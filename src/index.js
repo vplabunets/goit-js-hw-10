@@ -1,87 +1,69 @@
 import './css/styles.css';
+import Notiflix from 'notiflix';
+import fetchCountriesByName from './fetchCountries';
+import refs from './refs';
 import { debounce } from 'lodash';
 let _ = require('lodash');
 const DEBOUNCE_DELAY = 300;
-const refs = {
-  inputEl: document.querySelector('#search-box'),
-  countryListEl: document.querySelector('.country-list'),
-  countryInfoEl: document.querySelector('.country-info'),
-};
-let aaaa = refs.inputEl.addEventListener(
+const FAILURE_MESSAGE = 'Oops, there is no country with that name';
+const NOTIFICATION_MESSAGE =
+  'Too many matches found. Please enter a more specific name.';
+let aaaa = refs().inputEl.addEventListener(
   'input',
   _.debounce(onInputType, DEBOUNCE_DELAY)
 );
 
-// console.log(refs.inputEl);
-
 function onInputType(event) {
-  //   event.preventDefault();
-
+  event.preventDefault();
   let inputData = event.target.value;
   // console.log(event.target.value);
   inputData = inputData.trim();
-  // console.log(inputData);
-  fetchCountries(inputData);
-  return inputData;
-}
-// console.log(onInputType());
-
-function fetchCountries(name) {
-  // let countryLink = `https://restcountries.com/v2/name/${name},{name}`;
-  let countryLink = `https://restcountries.com/v2/{${name}}?fields={name.official},{capital},{population},{flags.svg},{languages}`;
-  // let countryLink = 'https://restcountries.com/v2/all?fields=name,capital,currencies'
-  // let countryLink = `https://restcountries.com/v2/all?fields=${name},capital,currencies`;
-  const fetchedCountry = fetch(countryLink)
-    .then(response => {
-      return response.json();
-    })
+  console.log(inputData);
+  fetchCountriesByName(inputData)
     .then(renderCountry)
     .catch(error => console.log(error));
-  return fetchedCountry;
+  // return inputData;
 }
 
-console.log(fetchCountries(onInputType()));
-
 function renderCountry(countries) {
-  // console.log(countries);
-  // let names = countries.map(country => country.name);
-  // console.log(names);
+  // if (!countries.status) {
   if (countries.length >= 10) {
-    return alert('сильно много хочешь');
+    // let names = countries.map(country => country.name);
+    // console.log(names);
+    return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
+    console.log(countries);
     const markup = countries
       .map(
-        nameOfCountry =>
-          `<li class="country-item"><img class="country-flag" src="${nameOfCountry.flags.svg}"
-           alt="flag ${nameOfCountry.name}" width = "30" height ="18"> 
-           <p class="country-name">${nameOfCountry.name}</p></li>`
+        ({ flags, capital, population, languages, name }) =>
+          `<li class="country-item"><img class="country-flag" src="${flags.svg}"
+           alt="flag ${name.official}" width = "30" height ="18"> 
+           <p class="country-name">${name.official}</p></li>`
       )
       .join('');
     // console.log(markup);
     // for (const nameOfCountry of names) {
     // console.log(nameOfCountry);>
-    refs.countryListEl.innerHTML = markup;
+    refs().countryListEl.innerHTML = markup;
   } else {
-    refs.countryListEl.remove();
+    refs().countryListEl.remove();
     console.log('тут будет красота');
-
     const markup2 = countries
-      .map(
-        nameOfCountry =>
-          `<div class="country-card"><img class="country-card__flag" src="${nameOfCountry.flags.svg}"
-           alt="flag ${nameOfCountry.name}" width = "30" height ="18"> <h2> ${nameOfCountry.name}</h2></div>
-          <li class="">Capital: ${nameOfCountry.capital} </li>
-          <li class="">Population: ${nameOfCountry.population}  </li>
-          <li class="">Languages: ${nameOfCountry.languages[0].name}  </li>
-          `
-      )
+      .map(function ({ flags, capital, population, languages, name }) {
+        console.log(languages);
+        let markup = `<div class="country-card"><img class="country-card__flag" src="${
+          flags.svg
+        }"
+          alt="flag ${name.official}" width = "30" height ="18"> <h2> ${
+          name.official
+        }</h2></div>
+          <li class="">Capital: ${capital} </li>
+          <li class="">Population: ${population}  </li>
+          <li class="">Languages: ${Object.values(languages)}  </li>
+          `;
+        return markup;
+      })
       .join('');
-    refs.countryInfoEl.innerHTML = markup2;
+    refs().countryInfoEl.innerHTML = markup2;
   }
-
-  // refs.countryInfoEl.innerHTML = markup2;
-  // refs.divCountryEl.innerHTML = `<ul><li>${nameOfCountry}</li></ul>`;
-  // console.log('нужно сделать другую разметку');
-  // }
-  // }
 }
