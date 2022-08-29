@@ -18,3 +18,19 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+.country-item {
+  display: flex;
+  align-self: center;
+}
+.country-flag {
+  align-self: center;
+  margin-right: 50px;
+  /* border: 2px;
+  border-image: black; */
+  border: 1px outset black;
+  border-radius: 2px;
+}
+
+.country-card {
+  display: flex;
+}
