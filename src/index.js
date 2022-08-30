@@ -2,7 +2,6 @@ import './css/styles.css';
 import Notiflix from 'notiflix';
 import fetchCountriesByName from './fetchCountries';
 import refs from './refs';
-import { debounce } from 'lodash';
 let _ = require('lodash');
 const DEBOUNCE_DELAY = 300;
 const FAILURE_MESSAGE = 'Oops, there is no country with that name';
@@ -15,24 +14,25 @@ let aaaa = refs().inputEl.addEventListener(
 
 function onInputType(event) {
   event.preventDefault();
-  let inputData = event.target.value;
-  // console.log(event.target.value);
-  inputData = inputData.trim();
-  console.log(inputData);
-  fetchCountriesByName(inputData)
-    .then(renderCountry)
-    .catch(error => console.log(error));
-  // return inputData;
+  if (event.target.value !== '') {
+    let inputData = event.target.value.trim();
+    fetchCountriesByName(inputData)
+      .then(renderCountry)
+      .catch(error => console.log(error));
+  } else {
+    refs().countryInfoEl.innerHTML = '';
+    return Notiflix.Notify.info('Нужно ввести название');
+  }
 }
 
 function renderCountry(countries) {
-  // if (!countries.status) {
-  if (countries.length >= 10) {
-    // let names = countries.map(country => country.name);
-    // console.log(names);
+  if (countries.status === 404) {
+    refs().countryInfoEl.innerHTML = '';
+    Notiflix.Notify.failure(FAILURE_MESSAGE);
+  } else if (countries.length >= 10) {
+    // refs().countryInfoEl.remove();
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
-    console.log(countries);
     const markup = countries
       .map(
         ({ flags, capital, population, languages, name }) =>
@@ -41,12 +41,8 @@ function renderCountry(countries) {
            <p class="country-name">${name.official}</p></li>`
       )
       .join('');
-    // console.log(markup);
-    // for (const nameOfCountry of names) {
-    // console.log(nameOfCountry);>
-    refs().countryListEl.innerHTML = markup;
+    refs().countryInfoEl.innerHTML = markup;
   } else {
-    refs().countryListEl.remove();
     console.log('тут будет красота');
     const markup2 = countries
       .map(function ({ flags, capital, population, languages, name }) {
