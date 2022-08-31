@@ -45,7 +45,7 @@ function renderCountry(countries) {
 
     refs().countryInfoEl.innerHTML = markup;
   } else {
-    let markup2 = countries.map(
+    refs().countryInfoEl.innerHTML = countries.map(
       ({ flags, capital, population, languages, name }) =>
         `<div class="country-card"><img class="country-card__flag" src="${
           flags.svg
@@ -57,7 +57,6 @@ function renderCountry(countries) {
           <li class="">Languages: ${Object.values(languages)}  </li>
           `
     );
-
-    refs().countryInfoEl.innerHTML = markup2;
+    // refs().countryInfoEl.innerHTML = markup2;
   }
 }
