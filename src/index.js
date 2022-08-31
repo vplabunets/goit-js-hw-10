@@ -41,12 +41,12 @@ function renderCountry(countries) {
            <p class="country-name">${name.official}</p></li>`
       )
       .join('');
+    console.log(markup);
     refs().countryInfoEl.innerHTML = markup;
   } else {
     console.log('тут будет красота');
     const markup2 = countries
-      .map(function ({ flags, capital, population, languages, name }) {
-        console.log(languages);
+      .map(({ flags, capital, population, languages, name }) => {
         let markup = `<div class="country-card"><img class="country-card__flag" src="${
           flags.svg
         }"
@@ -60,6 +60,7 @@ function renderCountry(countries) {
         return markup;
       })
       .join('');
+    console.log();
     refs().countryInfoEl.innerHTML = markup2;
   }
 }
