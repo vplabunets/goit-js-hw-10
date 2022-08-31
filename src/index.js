@@ -33,7 +33,7 @@ function renderCountry(countries) {
     // refs().countryInfoEl.remove();
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
-    let markup = countries
+    refs().countryInfoEl.innerHTML = countries
       .map(
         ({ flags, capital, population, languages, name }) =>
           `<li class="country-item"><img class="country-flag" src="${flags.svg}"
@@ -41,9 +41,9 @@ function renderCountry(countries) {
            <p class="country-name">${name.official}</p></li>`
       )
       .join('');
-    console.log(markup);
+    // console.log(markup);
 
-    refs().countryInfoEl.innerHTML = markup;
+    // refs().countryInfoEl.innerHTML = markup;
   } else {
     refs().countryInfoEl.innerHTML = countries.map(
       ({ flags, capital, population, languages, name }) =>
