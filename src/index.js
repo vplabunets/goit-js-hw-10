@@ -33,7 +33,7 @@ function renderCountry(countries) {
     // refs().countryInfoEl.remove();
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
-    const markup = countries
+    let markup = countries
       .map(
         ({ flags, capital, population, languages, name }) =>
           `<li class="country-item"><img class="country-flag" src="${flags.svg}"
@@ -42,10 +42,11 @@ function renderCountry(countries) {
       )
       .join('');
     console.log(markup);
+
     refs().countryInfoEl.innerHTML = markup;
   } else {
     console.log('тут будет красота');
-    const markup2 = countries
+    let markup2 = countries
       .map(({ flags, capital, population, languages, name }) => {
         let markup = `<div class="country-card"><img class="country-card__flag" src="${
           flags.svg
@@ -60,7 +61,7 @@ function renderCountry(countries) {
         return markup;
       })
       .join('');
-    console.log();
+    console.log('1');
     refs().countryInfoEl.innerHTML = markup2;
   }
 }
