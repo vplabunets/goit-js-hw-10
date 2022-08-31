@@ -8,6 +8,7 @@ export default function fetchCountriesByName(name) {
     //   console.log(countryObject.status);
     //   return;
     // }
+
     return countryObject.json();
   });
 }

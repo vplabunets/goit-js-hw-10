@@ -45,23 +45,19 @@ function renderCountry(countries) {
 
     refs().countryInfoEl.innerHTML = markup;
   } else {
-    console.log('тут будет красота');
-    let markup2 = countries
-      .map(({ flags, capital, population, languages, name }) => {
-        let markup = `<div class="country-card"><img class="country-card__flag" src="${
+    let markup2 = countries.map(
+      ({ flags, capital, population, languages, name }) =>
+        `<div class="country-card"><img class="country-card__flag" src="${
           flags.svg
-        }"
-          alt="flag ${name.official}" width = "30" height ="18"> <h2> ${
+        }" alt="flag ${name.official}" width = "30" height ="18"> <h2> ${
           name.official
         }</h2></div>
           <li class="">Capital: ${capital} </li>
           <li class="">Population: ${population}  </li>
           <li class="">Languages: ${Object.values(languages)}  </li>
-          `;
-        return markup;
-      })
-      .join('');
-    console.log('1');
+          `
+    );
+
     refs().countryInfoEl.innerHTML = markup2;
   }
 }
