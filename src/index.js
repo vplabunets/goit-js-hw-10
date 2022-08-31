@@ -7,7 +7,7 @@ const DEBOUNCE_DELAY = 300;
 const FAILURE_MESSAGE = 'Oops, there is no country with that name';
 const NOTIFICATION_MESSAGE =
   'Too many matches found. Please enter a more specific name.';
-let aaaa = refs().inputEl.addEventListener(
+refs().inputEl.addEventListener(
   'input',
   _.debounce(onInputType, DEBOUNCE_DELAY)
 );
@@ -27,15 +27,15 @@ function onInputType(event) {
 
 function renderCountry(countries) {
   if (countries.status === 404) {
-    // refs().countryInfoEl.innerHTML = '';
+    refs().countryInfoEl.innerHTML = '';
     Notiflix.Notify.failure(FAILURE_MESSAGE);
   } else if (countries.length >= 10) {
-    // refs().countryInfoEl.remove();
+    refs().countryInfoEl.innerHTML = '';
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
     refs().countryInfoEl.innerHTML = countries
       .map(
-        ({ flags, capital, population, languages, name }) =>
+        ({ flags, name }) =>
           `<li class="country-item"><img class="country-flag" src="${flags.svg}"
            alt="flag ${name.official}" width = "30" height ="18"> 
            <p class="country-name">${name.official}</p></li>`
