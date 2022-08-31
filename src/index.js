@@ -27,7 +27,7 @@ function onInputType(event) {
 
 function renderCountry(countries) {
   if (countries.status === 404) {
-    refs().countryInfoEl.innerHTML = '';
+    // refs().countryInfoEl.innerHTML = '';
     Notiflix.Notify.failure(FAILURE_MESSAGE);
   } else if (countries.length >= 10) {
     // refs().countryInfoEl.remove();
