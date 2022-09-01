@@ -24,6 +24,7 @@ body {
 }
 .country-flag {
   align-self: center;
+  vertical-align: center;
   margin-right: 50px;
   /* border: 2px;
   border-image: black; */
@@ -33,4 +34,12 @@ body {
 
 .country-card {
   display: flex;
+  vertical-align: center;
+}
+
+.country-card h2 {
+  margin-left: 20px;
+}
+.country-card__flag {
+  margin: auto 0;
 }

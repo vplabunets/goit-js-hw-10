@@ -26,6 +26,14 @@ function onInputType(event) {
 }
 
 function renderCountry(countries) {
+  // let { flags, capital, population, languages, name } = countries;
+  for (let key of countries) {
+    // console.log(key);
+  }
+  // console.log(countries);
+  console.log(countries);
+  console.log(typeof countries);
+
   if (countries.status === 404) {
     refs().countryInfoEl.innerHTML = '';
     Notiflix.Notify.failure(FAILURE_MESSAGE);
@@ -33,6 +41,8 @@ function renderCountry(countries) {
     refs().countryInfoEl.innerHTML = '';
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
+    // console.log(countries);
+    // console.log(typeof countries);
     refs().countryInfoEl.innerHTML = countries
       .map(
         ({ flags, name }) =>
