@@ -22,45 +22,60 @@ function onInputType(event) {
       .then(renderCountry)
       .catch(error => console.log(error));
   } else {
-    refs().countryInfoEl.innerHTML = '';
+    markupCleaning();
     return Notiflix.Notify.info('Нужно ввести название');
   }
 }
+//Markup cleaning function
+function markupCleaning() {
+  refs.countryListEl.innerHTML = '';
+  refs.countryInfoEl.innerHTML = '';
+}
 
+//
 function renderCountry(countries) {
+  //Error 404 checking
   if (countries.status === 404) {
-    refs.countryInfoEl.innerHTML = '';
+    markupCleaning();
     Notiflix.Notify.failure(FAILURE_MESSAGE);
   } else if (countries.length >= 10) {
-    refs.countryInfoEl.innerHTML = '';
+    markupCleaning();
+    //otification
     return Notiflix.Notify.info(NOTIFICATION_MESSAGE);
   } else if (countries.length >= 2 && countries.length <= 10) {
-    // console.log(countries);
-    // console.log(typeof countries);
-    refs.countryInfoEl.innerHTML = countries
-      .map(
-        ({ flags, name }) =>
-          `<li class="country-item"><img class="country-flag" src="${flags.svg}"
+    markupCleaning();
+    countriesListMarkupCreation(countries);
+  } else {
+    markupCleaning();
+    countryInfoMarkupCreation(countries);
+  }
+}
+
+function countriesListMarkupCreation(countries) {
+  refs.countryListEl.innerHTML = countries
+    .map(
+      ({ flags, name }) =>
+        `<li class="country-item"><img class="country-flag" src="${flags.svg}"
            alt="flag ${name.official}" width = "30" height ="18"> 
            <p class="country-name">${name.official}</p></li>`
-      )
-      .join('');
-    // console.log(markup);
-
-    // refs().countryInfoEl.innerHTML = markup;
-  } else {
-    refs.countryInfoEl.innerHTML = countries.map(
-      ({ flags, capital, population, languages, name }) =>
-        `<div class="country-card"><img class="country-card__flag" src="${
-          flags.svg
-        }" alt="flag ${name.official}" width = "30" height ="18"> <h2> ${
-          name.official
-        }</h2></div>
-          <li class="">Capital: ${capital} </li>
-          <li class="">Population: ${population}  </li>
-          <li class="">Languages: ${Object.values(languages)}  </li>
+    )
+    .join('');
+}
+function countryInfoMarkupCreation(countries) {
+  refs.countryInfoEl.innerHTML = countries.map(
+    ({ flags, capital, population, languages, name }) =>
+      `<div class="country-card"><img class="country-card__flag" src="${
+        flags.svg
+      }" alt="flag ${name.official}" width = "30" height ="18"> <h2> ${
+        name.official
+      }</h2></div>
+      <ul class="country-card__list">
+          <li class="country-card__item">Capital: ${capital}</li>
+          <li class="country-card__item">Population: ${population}</li>
+          <li class="country-card__item">Languages: ${Object.values(
+            languages
+          )}</li>
+          </ul>
           `
-    );
-    // refs().countryInfoEl.innerHTML = markup2;
-  }
+  );
 }
